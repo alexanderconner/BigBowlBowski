@@ -9,11 +9,22 @@ public class DragLaunch : MonoBehaviour {
 	private float startTime, endTime;
 	private Ball ball;
 
+
 	// Use this for initialization
 	void Start () {
 		ball = GetComponent<Ball> ();
 	}
 
+	public void MoveStart(float amount) {
+		Debug.Log ("Ball moved " + amount);
+		if (ball.GetHasLaunched() == false) { // If the ball hasn't launched yet we can adjust it
+
+			if ((ball.transform.position.x + amount) < 50f && (ball.transform.position.x + amount) > -50f) { // Keep ball in bounds of lane
+				ball.transform.Translate (new Vector3 (amount, 0, 0));
+			}
+		}
+	}
+	 
 	public void DragStart() {
 		//Capture time and position of drag start
 		dragStart = Input.mousePosition;
@@ -22,17 +33,19 @@ public class DragLaunch : MonoBehaviour {
 
 	public void DragEnd() { //Swipe control system
 		//launch the ball
+		if (ball.GetHasLaunched() == false) {
+			dragEnd = Input.mousePosition;
+			endTime = Time.time;
 
-		dragEnd = Input.mousePosition;
-		endTime = Time.time;
+			float dragDuration = endTime - startTime;
 
-		float dragDuration = endTime - startTime;
+			float launchSpeedX = (dragEnd.x - dragStart.x) / dragDuration;
+			float launchSpeedZ = (dragEnd.y - dragStart.y) / dragDuration;
 
-		float launchSpeedX = (dragEnd.x - dragStart.x) / dragDuration;
-		float launchSpeedZ = (dragEnd.y - dragStart.y) / dragDuration;
+			Vector3 launchVelocity = new Vector3 (launchSpeedX, 0, launchSpeedZ);
 
-		Vector3 launchVelocity = new Vector3 (launchSpeedX, 0, launchSpeedZ);
-
-		ball.Launch(launchVelocity);
+			ball.Launch (launchVelocity);
+			print (ball.GetHasLaunched());
+		}
 	}
 }
