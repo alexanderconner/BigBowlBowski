@@ -13,7 +13,7 @@ public class Pin : MonoBehaviour {
 
 		//float tiltInX = Mathf.Abs(rotationInEuler.x);
 		//float tiltInZ = Mathf.Abs(rotationInEuler.z);
-		float tiltInX = Mathf.Abs(Mathf.DeltaAngle(transform.rotation.eulerAngles.x, 0));
+		float tiltInX = Mathf.Abs(Mathf.DeltaAngle(transform.rotation.eulerAngles.x, -90));
 		float tiltInZ = Mathf.Abs(Mathf.DeltaAngle(transform.rotation.eulerAngles.z, 0));
 
 		if (tiltInX < standingThreshold && tiltInZ < standingThreshold) {
