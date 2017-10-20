@@ -4,18 +4,26 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PinSetter : MonoBehaviour {
-
+	public int lastStandingCount = -1;
 	public Text pinCountText;
+
+	private Ball ball;
+	private float lastChangeTime;
 	private bool ballEnteredBox = false;
 
 	// Use this for initialization
 	void Start () {
-
+		ball = GameObject.FindObjectOfType<Ball> ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		pinCountText.text = CountStanding ().ToString();
+
+		//if ball has entered box
+		if (ballEnteredBox) {
+			CheckStanding ();
+		}
 	}
 
 	public int CountStanding() {
@@ -28,6 +36,32 @@ public class PinSetter : MonoBehaviour {
 			}
 		}
 		return pinsStanding;
+	}
+
+	void CheckStanding() {
+		//Update the laststanding count
+		//Call PinshaveSettled
+		int currentStanding = CountStanding();
+
+		//Good way to check last time something was changed. 
+		if (currentStanding != lastStandingCount) {
+			lastChangeTime = Time.time;
+			lastStandingCount = currentStanding;
+			return;
+		}
+
+		float settleTime = 3f; //how long to wait for pins to be settled
+		if (Time.time - lastChangeTime > settleTime) { //if last change > 3s ago
+			PinsHaveSettled();
+		}
+	}
+
+	void PinsHaveSettled()
+	{
+		ball.Reset ();
+		pinCountText.color = Color.green;
+		lastStandingCount = -1; //Indicates pines have settled.
+		ballEnteredBox = false;
 	}
 
 	void OnTriggerEnter(Collider collider) {

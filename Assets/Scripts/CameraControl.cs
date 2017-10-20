@@ -6,6 +6,7 @@ public class CameraControl : MonoBehaviour {
 
 	public Ball ball;
 	private Vector3 offset;
+	private 
 
 	// Use this for initialization
 	void Start () {
@@ -14,9 +15,10 @@ public class CameraControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (transform.position.z <= 1750f) // in front of head pin
+		if (ball.transform.position.z <= 1750f) // in front of head pin
 		{
 			gameObject.transform.position = ball.transform.position + offset;
 		}
 	}
+		
 }
