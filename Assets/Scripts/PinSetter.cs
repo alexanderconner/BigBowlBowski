@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PinSetter : MonoBehaviour {
 	public int lastStandingCount = -1;
 	public Text pinCountText;
+	public float distancetoRaise = 40f;
 
 	private Ball ball;
 	private float lastChangeTime;
@@ -83,5 +84,24 @@ public class PinSetter : MonoBehaviour {
 			
 			Destroy (collider.gameObject);
 		}
+	}
+
+	public void RaisePins () {
+		//Raise standing pins only by distanceToRaise
+		Debug.Log("raising pins");
+		foreach (Pin pin in GameObject.FindObjectsOfType<Pin> ()) {
+			pin.RaiseIfStanding ();
+		}
+	}
+
+	public void LowerPins () {
+		//Lower standing pins only by distanceToRaise
+		Debug.Log("lowering pins");
+		foreach (Pin pin in GameObject.FindObjectsOfType<Pin> ()) {
+			pin.Lower ();
+		}
+	}
+	public void RenewPins () {
+		Debug.Log("Renewing Pins");
 	}
 }
